@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
 import 'material-design-icons/iconfont/material-icons.css';
 
-const rootEl = document.getElementById('root')
+const rootEl = document.getElementById('root');
 
 ReactDOM.render(<App />, rootEl);
 

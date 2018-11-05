@@ -1,0 +1,39 @@
+language: node_js
+# Only build tags
+if: tag IS present
+os:
+- windows
+- linux
+- osx
+node_js:
+- '10'
+before_install:
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y fakeroot rpm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y tree; fi
+- npm i -g shx npm-check
+before_deploy:
+- git config --local user.name "liudonghua123"
+- git config --local user.email "liudonghua123@gmail.com"
+install:
+- npm i --loglevel verbose
+script:
+- CI=false npm run dist
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tree dist; fi
+- shx ls -la dist
+matrix:
+  allow_failures:
+  - os: osx
+deploy:
+  provider: releases
+  file:
+  - dist/react-material-electron-0.1.0-win32-ia32.zip
+  - dist/react-material-electron-0.1.0-win32-x64.zip
+  - dist/react-material-electron-0.1.0-win32.exe
+  - dist/react-material-electron-0.1.0-linux-ia32.zip
+  - dist/react-material-electron-0.1.0-linux-x64.zip
+  - dist/react-material-electron-0.1.0-darwin.zip
+  skip_cleanup: true
+  on:
+    tags: true
+  api-key:
+    secure: Mj9+1KfVYfNi0sOBI1BLxGR2S3TV6wgQgthRLSQE1QEfriP7mYd4vTSlW50/fv1krQKL5KGkqw7ZZX7Ko+YdT8Yv6utkwl/NPK3uXx4RRtseM/9+UiSEnHOSsM4I5fgJW5LkV7gVYfcJRZlIFKOE50loePV4pj6Q8AcUTkVNFno+VBda2ij2jgGCj8H2xkSR84GS7IgG/dqmr4kSrZdYkLVsvvnVW++5WzVbkO/p++C+qv1KZ6cek4RVP5HfTZddtTtBAA8obbYz7TZsOfTsts3kqLRxLjRxPncvbGayNeghPBOGDiGw8BoAMSzKUDE/hSCDYFVFZTACiJC2eNtr5ijqIgefj3MQ5Di3XjPv0PTMZsaAAj+rn6ej3Trq9XpqjkBShLQtUA7llaB5SVjXakrgSA9i+mKpYdDPSjXW48XaTipr+6UiVg+bq9oMUTs2FNKNQ03NTJqglIOcBVubqf7PhVPQE6i1OeqCwLhvH2SImKXWFvKlAKNkjUrR2GNzG9z/2rXP4q5LRy8qPY8DlP2BtoErWFY81lMggv2hXcKTdy0q0z1iSirKWovkYpBmiI6BWTNXNXVCJhgekc7dgm7igYk9u3iRivjBDd0892o7t5EkkOcwAXhgEhXUi2ieth/LG19P6hgwR2Nqr8xdrsXlqgdoImmRXjkSBmK3jnU=

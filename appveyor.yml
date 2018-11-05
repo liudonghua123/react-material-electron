@@ -1,0 +1,34 @@
+platform:
+  - x64
+
+skip_non_tags: true
+
+cache:
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+install:
+  - ps: Install-Product node 10 x64
+  - npm i
+
+build_script:
+  - set CI=false && npm run dist
+
+test: off
+
+artifacts:
+  - path: dist/react-material-electron-0.1.0-win32-ia32.zip
+  - path: dist/react-material-electron-0.1.0-win32-x64.zip
+  - path: dist/react-material-electron-0.1.0-win32.exe
+
+deploy:
+  description: 'Release description'
+  provider: GitHub
+  auth_token:
+    secure: 1atOy6zWOIa9O5TpXF2pC9p/WNtuA8J6+54WO4rLYPagz4w9antRz8mHxXCHWhOy
+  artifact: /.*\.zip/,/.*\.exe/
+  draft: false
+  prerelease: false
+  # https://www.appveyor.com/docs/deployment/#deploy-on-tag-github-and-gitlab-only
+  on:
+    appveyor_repo_tag: true

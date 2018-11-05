@@ -1,0 +1,116 @@
+{
+  "name": "react-material-electron",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "./",
+  "main": "public/electron.js",
+  "description": "a small app build on react, material-ui and electron",
+  "author": {
+    "name": "liudonghua",
+    "email": "liudonghua123@gmail.com",
+    "url": "http://liudonghua.com"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.3.2",
+    "@material-ui/icons": "^3.0.1",
+    "material-design-icons": "^3.0.1",
+    "typeface-roboto": "0.0.54",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-scripts": "2.0.5",
+    "fs-extra": "^7.0.0",
+    "update-electron-app": "^1.3.0",
+    "electron-default-menu": "^1.0.1",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "scripts": {
+    "start": "nf start -p 3000",
+    "build": "cross-env NODE_ENV=production CI=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-start": "node public/electron-wait-react",
+    "react-start": "react-scripts start",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && cross-env NODE_ENV=production electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.29",
+    "@electron-forge/maker-deb": "^6.0.0-beta.29",
+    "@electron-forge/maker-flatpak": "^6.0.0-beta.29",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.29",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.29",
+    "@electron-forge/maker-zip": "^6.0.0-beta.29",
+    "cross-env": "^5.2.0",
+    "electron": "3.0.7",
+    "electron-builder": "^20.29.0",
+    "electron-builder-squirrel-windows": "^20.30.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "foreman": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.liudonghua.react-material-electron",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories":{
+      "buildResources": "assets"
+    },
+    "win": {
+      "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  }
+}

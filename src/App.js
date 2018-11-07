@@ -9,7 +9,7 @@ import {
   Route,
   NavLink,
   HashRouter,
-  withRouter 
+  withRouter
 } from "react-router-dom";
 import Home from './pages/Home';
 import Configuration from './pages/Configuration';
@@ -24,7 +24,7 @@ const styles = theme => ({
 
 class App extends React.Component {
   state = {
-    
+
   };
 
   render() {
@@ -35,9 +35,9 @@ class App extends React.Component {
         <div>
           <Header />
           <div className={classes.root}>
-              <Route exact path="/home" component={Home}/>
-              <Route path="/configuration" component={Configuration}/>
-              <Route path="/about" component={About}/>
+            <Route exact path="/home" component={Home} />
+            <Route path="/configuration" component={Configuration} />
+            <Route path="/about" component={About} />
           </div>
           <Footer />
         </div>

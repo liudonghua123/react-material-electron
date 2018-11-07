@@ -98,7 +98,7 @@ class Header extends React.Component {
 
     // https://stackoverflow.com/questions/47709225/react-router-v4-pass-parameters-to-withrouter
     let RouterListItem = ({ history, ...item }) => (
-      <ListItem button key={item.title} 
+      <ListItem button key={item.title}
         onClick={() => { history.push(`${item.url.toLowerCase()}`); this.setState({ open: false }); }} >
         <ListItemIcon><InboxIcon /></ListItemIcon>
         <ListItemText primary={item.title} />
@@ -146,7 +146,7 @@ class Header extends React.Component {
           </div>
           <Divider />
           <List>
-            {[{title: '主页', url: '/home'}, {title: '配置', url: '/configuration'}, {title: '关于', url: '/about'}].map(item => (
+            {[{ title: '主页', url: '/home' }, { title: '配置', url: '/configuration' }, { title: '关于', url: '/about' }].map(item => (
               <RouterListItem {...item} />
             ))}
             {this.Button}

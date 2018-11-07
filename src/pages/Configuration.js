@@ -98,7 +98,7 @@ class Configuration extends PureComponent {
   constructor(props) {
     super(props);
     console.info(`getItem ${localStorage.getItem('items')}`);
-    this.state = { 
+    this.state = {
       items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [],
       search: '',
       replace: '',
@@ -139,7 +139,7 @@ class Configuration extends PureComponent {
 
   handleFocus = name => event => {
     console.info(`handleFocus ${name}`);
-    if(this[name] && this[name].focus) {
+    if (this[name] && this[name].focus) {
       this[name].focus();
     }
   };
@@ -176,32 +176,32 @@ class Configuration extends PureComponent {
       // set focus
       // reset count
       this.count = 0
-    }, 250); 
+    }, 250);
   }
 
   handleAdd = event => {
-    if(!this.state.search || !this.state.replace) {
+    if (!this.state.search || !this.state.replace) {
       this.setState({ open: true, dialogTitle: '错误', dialogContent: '搜索或替换都不能为空' });
       return;
     }
-    const items = [...this.state.items, {search: this.state.search, replace: this.state.replace}];
+    const items = [...this.state.items, { search: this.state.search, replace: this.state.replace }];
     this.setState({
       items,
       searchMode: false,
-    }); 
+    });
     console.info(`saveItem ${JSON.stringify(items)}`);
     localStorage.setItem('items', JSON.stringify(items));
   };
 
   handleSearch = event => {
     const items = this.state.items.filter((item, index) => {
-      if(this.state.search && this.state.replace) {
+      if (this.state.search && this.state.replace) {
         return item.search.includes(this.state.search) && item.replace.includes(this.state.replace);
       }
-      else if(this.state.search) {
+      else if (this.state.search) {
         return item.search.includes(this.state.search);
       }
-      else if(this.state.replace) {
+      else if (this.state.replace) {
         return item.replace.includes(this.state.replace);
       }
       else {
@@ -231,7 +231,7 @@ class Configuration extends PureComponent {
     const index = items.indexOf(updateItem);
     items[index].search = this.state.searchEdit;
     items[index].replace = this.state.replaceEdit;
-    if(!this.state.searchEdit || !this.state.replaceEdit) {
+    if (!this.state.searchEdit || !this.state.replaceEdit) {
       this.setState({ open: true, dialogTitle: '错误', dialogContent: '搜索或替换都不能为空' });
       return;
     }
@@ -255,12 +255,12 @@ class Configuration extends PureComponent {
       <div className={this.props.classes.card} key={`${item.search}-${item.replace}`}>
         <div className={this.props.classes.cardContent}>
           <div className={this.props.classes.cardLeftContent}>
-            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} autoFocus ref={ input => { console.info(`set ref ${input} on ${this}`); this.searchInput = input } } value={this.state.searchEdit} onClick={this.handleFocus('searchInput')} onChange={this.handleChange('searchEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardSearch}>{item.search}</div>}
+            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} autoFocus ref={input => { console.info(`set ref ${input} on ${this}`); this.searchInput = input }} value={this.state.searchEdit} onClick={this.handleFocus('searchInput')} onChange={this.handleChange('searchEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardSearch}>{item.search}</div>}
             <div className={this.props.classes.cardArrow}>{' -> '}</div>
-            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} ref={ input => { console.info(`set ref ${input} on ${this}`); this.replaceInput = input } } value={this.state.replaceEdit} onClick={this.handleFocus('replaceInput')} onChange={this.handleChange('replaceEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardReplace}>{item.replace}</div>}
+            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} ref={input => { console.info(`set ref ${input} on ${this}`); this.replaceInput = input }} value={this.state.replaceEdit} onClick={this.handleFocus('replaceInput')} onChange={this.handleChange('replaceEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardReplace}>{item.replace}</div>}
           </div>
           <div className={this.props.classes.cardRightAction}>
-            <Button variant="contained" color="primary" onClick={this.handleUpdate(item, index)} disabled={ !this.state.editMode[index] }>修改</Button>
+            <Button variant="contained" color="primary" onClick={this.handleUpdate(item, index)} disabled={!this.state.editMode[index]}>修改</Button>
             <Button variant="contained" color="primary" onClick={this.handleDelete(item)}>删除</Button>
           </div>
         </div>
@@ -269,20 +269,20 @@ class Configuration extends PureComponent {
   };
 
   Transition = (props) => {
-      return <Slide direction="up" {...props} />;
+    return <Slide direction="up" {...props} />;
   }
 
   handleClose = () => {
-      this.setState({ open: false });
+    this.setState({ open: false });
   };
 
   render() {
     const { classes } = this.props;
     return (
       <div>
-      <form className={classes.container} noValidate autoComplete="off">
-        <Grid container spacing={24}>
-          <Grid item xs={3} className={classes.grid}>
+        <form className={classes.container} noValidate autoComplete="off">
+          <Grid container spacing={24}>
+            <Grid item xs={3} className={classes.grid}>
               <TextField
                 label="搜索"
                 className={classes.textField}
@@ -291,24 +291,24 @@ class Configuration extends PureComponent {
                 margin="normal"
                 variant="outlined"
               />
+            </Grid>
+            <Grid item xs={3} className={classes.grid}>
+              <TextField
+                label="替换"
+                className={classes.textField}
+                value={this.state.replace}
+                onChange={this.handleChange('replace')}
+                margin="normal"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={3} className={classes.grid}>
+              <Button variant="contained" onClick={this.handleAdd} className={classes.button}>添加</Button>
+            </Grid>
+            <Grid item xs={3} className={classes.grid}>
+              <Button variant="contained" onClick={this.handleSearch} color="primary" className={classes.button}>搜索</Button>
+            </Grid>
           </Grid>
-          <Grid item xs={3} className={classes.grid}>
-            <TextField
-              label="替换"
-              className={classes.textField}
-              value={this.state.replace}
-              onChange={this.handleChange('replace')}
-              margin="normal"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={3} className={classes.grid}>
-            <Button variant="contained" onClick={this.handleAdd} className={classes.button}>添加</Button>
-          </Grid>
-          <Grid item xs={3} className={classes.grid}>
-            <Button variant="contained" onClick={this.handleSearch} color="primary" className={classes.button}>搜索</Button>
-          </Grid>
-        </Grid>
         </form>
         <div>
           <RLDD
@@ -318,28 +318,28 @@ class Configuration extends PureComponent {
             onChange={this.handleRLDDChange}
           />
         </div>
-            <Dialog
-              open={this.state.open}
-              TransitionComponent={this.Transition}
-              keepMounted
-              onClose={this.handleClose}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {this.state.dialogTitle}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  {this.state.dialogContent}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleClose} color="primary">
-                  OK
-                </Button>
-              </DialogActions>
-            </Dialog>
+        <Dialog
+          open={this.state.open}
+          TransitionComponent={this.Transition}
+          keepMounted
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {this.state.dialogTitle}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              {this.state.dialogContent}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

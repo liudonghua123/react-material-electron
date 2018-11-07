@@ -21,7 +21,7 @@
         "constructor-super": "warn",
         "valid-typeof": "warn",
         "quotes": [
-            2,
+            4,
             "single"
         ],
         "semi": "warn",

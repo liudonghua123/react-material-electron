@@ -1,0 +1,3 @@
+That's because last by default a caret ^ only matches at the beginning of the text, and in the multiline mode – at the start of a line.
+
+The regular expression \w+$ finds the last word in every line

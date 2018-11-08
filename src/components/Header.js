@@ -146,7 +146,7 @@ class Header extends React.Component {
           </div>
           <Divider />
           <List>
-            {[{ title: '主页', url: '/home' }, { title: '配置', url: '/configuration' }, { title: '关于', url: '/about' }].map(item => (
+            {[{ title: '主页', url: '/' }, { title: '配置', url: '/configuration' }, { title: '关于', url: '/about' }].map(item => (
               <RouterListItem {...item} />
             ))}
             {this.Button}

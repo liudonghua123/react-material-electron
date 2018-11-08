@@ -35,7 +35,7 @@ class App extends React.Component {
         <div>
           <Header />
           <div className={classes.root}>
-            <Route exact path="/home" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route path="/configuration" component={Configuration} />
             <Route path="/about" component={About} />
           </div>

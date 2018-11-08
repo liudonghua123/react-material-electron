@@ -138,8 +138,8 @@ class Configuration extends PureComponent {
   };
 
   handleFocus = name => event => {
-    console.info(`handleFocus ${name}`);
-    if (this[name] && this[name].focus) {
+    console.info(`handleFocus ${name}, ${this[name]}`);
+    if (this[name]) {
       this[name].focus();
     }
   };
@@ -255,9 +255,9 @@ class Configuration extends PureComponent {
       <div className={this.props.classes.card} key={`${item.search}-${item.replace}`}>
         <div className={this.props.classes.cardContent}>
           <div className={this.props.classes.cardLeftContent}>
-            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} autoFocus ref={input => { console.info(`set ref ${input} on ${this}`); this.searchInput = input }} value={this.state.searchEdit} onClick={this.handleFocus('searchInput')} onChange={this.handleChange('searchEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardSearch}>{item.search}</div>}
+            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} autoFocus inputRef={input => { console.info(`set ref ${input} on ${this}`); this.searchInput = input }} value={this.state.searchEdit} onClick={this.handleFocus('searchInput')} onChange={this.handleChange('searchEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardSearch}>{item.search}</div>}
             <div className={this.props.classes.cardArrow}>{' -> '}</div>
-            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} ref={input => { console.info(`set ref ${input} on ${this}`); this.replaceInput = input }} value={this.state.replaceEdit} onClick={this.handleFocus('replaceInput')} onChange={this.handleChange('replaceEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardReplace}>{item.replace}</div>}
+            {this.state.editMode[index] ? <Input onKeyDown={this.handleKeyDown(item, index)} inputRef={input => { console.info(`set ref ${input} on ${this}`); this.replaceInput = input }} value={this.state.replaceEdit} onClick={this.handleFocus('replaceInput')} onChange={this.handleChange('replaceEdit')} className={this.props.classes.input} inputProps={{ 'aria-label': 'Description', }} /> : <div onClick={this.handleDoubleClick(item, index)} className={this.props.classes.cardReplace}>{item.replace}</div>}
           </div>
           <div className={this.props.classes.cardRightAction}>
             <Button variant="contained" color="primary" onClick={this.handleUpdate(item, index)} disabled={!this.state.editMode[index]}>修改</Button>

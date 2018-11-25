@@ -1,6 +1,7 @@
 language: node_js
-# Only build tags
-if: tag IS present
+branches:
+  only:
+  - search-replace-example
 os:
 - windows
 - linux
@@ -33,7 +34,5 @@ deploy:
   - dist/react-material-electron-0.1.0-linux-x64.zip
   - dist/react-material-electron-0.1.0-darwin.zip
   skip_cleanup: true
-  on:
-    tags: true
   api-key:
-    secure: Mj9+1KfVYfNi0sOBI1BLxGR2S3TV6wgQgthRLSQE1QEfriP7mYd4vTSlW50/fv1krQKL5KGkqw7ZZX7Ko+YdT8Yv6utkwl/NPK3uXx4RRtseM/9+UiSEnHOSsM4I5fgJW5LkV7gVYfcJRZlIFKOE50loePV4pj6Q8AcUTkVNFno+VBda2ij2jgGCj8H2xkSR84GS7IgG/dqmr4kSrZdYkLVsvvnVW++5WzVbkO/p++C+qv1KZ6cek4RVP5HfTZddtTtBAA8obbYz7TZsOfTsts3kqLRxLjRxPncvbGayNeghPBOGDiGw8BoAMSzKUDE/hSCDYFVFZTACiJC2eNtr5ijqIgefj3MQ5Di3XjPv0PTMZsaAAj+rn6ej3Trq9XpqjkBShLQtUA7llaB5SVjXakrgSA9i+mKpYdDPSjXW48XaTipr+6UiVg+bq9oMUTs2FNKNQ03NTJqglIOcBVubqf7PhVPQE6i1OeqCwLhvH2SImKXWFvKlAKNkjUrR2GNzG9z/2rXP4q5LRy8qPY8DlP2BtoErWFY81lMggv2hXcKTdy0q0z1iSirKWovkYpBmiI6BWTNXNXVCJhgekc7dgm7igYk9u3iRivjBDd0892o7t5EkkOcwAXhgEhXUi2ieth/LG19P6hgwR2Nqr8xdrsXlqgdoImmRXjkSBmK3jnU=
+    secure: hsS8fzmIEa8e37m6RabJ43e1nLENWDMAJY0AvbhHR34351X3RQgqwu4Axz4wNc60x52/hEv6yoevndcgafFWkf6C3pbsiZpq+09bsLkS/S3v3ZHSpkbhdvydKhG1qYgSYQh/iZK6P1pB1mgDBORZ3tQvb5yKPRXVQ2OwVSlgY3nM0sSzIO60bb1tyjqgCH/E28qZa6YLxHhoxypU3e9ItAgfh+eMKP+RVoUAAAzuU3cKFwt0i1aLpbDVw71ltCpa11CJ2SK5Nv4+k85TkkVn340hiqhydJBjPkuWObNs8Auf8tlThYrKjea+APaXAKPsOTigi4q9dwRN6P9DjY8y93gCsxnTqtVwl+mNdox+KhMBj++F/JGZTVkCK0k+8heFxvJWBGO0PWx54Rn05KwzssOtmhC2xbbvZUi7WOaiXrYs5fDXZUCfYTV6ds+sb2sewCXFei+Cry0e8Ml4XOf2nvd5hHcXAjaaoXIZCUWnHcK4FLjBELkvjx/8/3NKbSTfQuQiWXGzdykHurDd/7ijxMZlelWYYjafu+RtMUvUfAFTA5TndA3ZIb5+IOalRsJK9dlXEgj8hHhTEdOgJoVXPCjThMl/1a+CB354uShhlSFq9ROOboTGCuMkQ4hYIP6Ql5eOks+6HaMsNiI+s5V+U1c/TkCNECU52u7yQYKrIgE=

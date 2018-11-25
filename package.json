@@ -38,7 +38,7 @@
     "electron-start": "node public/electron-wait-react",
     "react-start": "react-scripts start",
     "pack": "npm run build && electron-builder --dir",
-    "dist": "npm run build && cross-env NODE_ENV=production electron-builder",
+    "dist": "npm run build && cross-env NODE_ENV=production CI=false electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {

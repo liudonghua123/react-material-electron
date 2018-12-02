@@ -19,11 +19,11 @@ serviceWorker.unregister();
 // https://medium.com/@brianhan/hot-reloading-cra-without-eject-b54af352c642
 // https://daveceddia.com/hot-reloading-create-react-app/
 if (module.hot) {
-    module.hot.accept('./App', () => {
-      const NextApp = require('./App').default
-      ReactDOM.render(
-        <NextApp />,
-        rootEl
-      )
-    })
-  }
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default;
+    ReactDOM.render(
+      <NextApp />,
+      rootEl,
+    );
+  });
+}

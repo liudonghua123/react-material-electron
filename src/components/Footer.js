@@ -7,7 +7,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     marginTop: theme.spacing.unit * 8,
     padding: `${theme.spacing.unit * 6}px 0`,
-  }
+  },
 });
 
 class Footer extends Component {

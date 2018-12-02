@@ -1,26 +1,27 @@
-import React, { Component, PureComponent } from 'react'
-import ReactDiffViewer from 'react-diff-viewer'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Slide from '@material-ui/core/Slide'
-import './home.css'
+import React, { Component, PureComponent } from 'react';
+import ReactDiffViewer from 'react-diff-viewer';
+import MonacoEditor, { MonacoDiffEditor } from 'react-monaco-editor';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import './home.css';
 
-const { remote, ipcRenderer: ipc } = window.require('electron')
+const { remote, ipcRenderer: ipc } = window.require('electron');
 
 class Home extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       items: localStorage.getItem('items')
         ? JSON.parse(localStorage.getItem('items'))
@@ -30,147 +31,158 @@ class Home extends Component {
       completed: 0,
       dialogTitle: '',
       dialogContent: '',
-      open: false
-    }
+      open: false,
+    };
 
     ipc.on('get-synonym-result', (event, result) => {
       this.setState({
-        replacedText: result
-      })
-    })
+        replacedText: result,
+      });
+    });
   }
 
-  handleClick = name => event => {
-    if (name == 'replace') {
+  handleClick = name => (event) => {
+    if (name === 'replace') {
       // search and replace, and update completed
-      const items = this.state.items
-      const totalCount = items.length
+      const { items, originalText, replacedText } = this.state;
+      const totalCount = items.length;
       // init originalText to replacedText
-      this.state.replacedText = this.state.originalText
+      replacedText = originalText;
       this.setState({
-        completed: 0
-      })
+        completed: 0,
+      });
       for (let i = 0; i < totalCount; i++) {
         setTimeout(() => {
-          console.log(`process ${i} item`)
-          const replacedText = this.state.replacedText.replace(
+          console.log(`process ${i} item`);
+          const replacedText = replacedText.replace(
             new RegExp(items[i].search, 'gm'),
-            items[i].replace
-          )
+            items[i].replace,
+          );
           this.setState({
             replacedText,
-            completed: parseInt(((i + 1) / totalCount) * 100)
-          })
-          if (i + 1 == totalCount) {
+            completed: parseInt(((i + 1) / totalCount) * 100),
+          });
+          if (i + 1 === totalCount) {
             this.setState({
               open: true,
               dialogTitle: '替换',
-              dialogContent: '替换完成'
-            })
+              dialogContent: '替换完成',
+            });
           }
-        }, i * 1000)
+        }, i * 1000);
       }
-    } else if (name == 'reset') {
-      this.setState({ replacedText: '', completed: 0 })
-    } else if (name == 'file') {
-      console.info(`file clicked`)
-      this.fileInput.click()
-    } else if (name == 'synonym') {
-      const text = this.state.originalText
+    } else if (name === 'reset') {
+      this.setState({ replacedText: '', completed: 0 });
+    } else if (name === 'file') {
+      console.info('file clicked');
+      this.fileInput.click();
+    } else if (name === 'synonym') {
+      const text = this.state.originalText;
       // send convert synonym request
-      const result = ipc.send('get-synonym', text)
-    } else if (name == 'copyToOriginal') {
+      const result = ipc.send('get-synonym', text);
+    } else if (name === 'copyToOriginal') {
       this.setState({
-        originalText: this.state.replacedText
-      })
+        originalText: this.state.replacedText,
+      });
     }
   }
 
-  readFile = file => {
+  readFile = (file) => {
     // read file
-    const reader = new FileReader()
-    reader.onload = event => {
-      const textContents = event.target.result
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const textContents = event.target.result;
       this.setState({
-        originalText: textContents
-      })
-    }
-    reader.readAsText(file, 'UTF-8')
+        originalText: textContents,
+      });
+    };
+    reader.readAsText(file, 'UTF-8');
     this.setState({
       completed: 0,
       open: true,
       dialogTitle: '文件加载',
-      dialogContent: '加载成功，现在可以点击替换按钮'
-    })
+      dialogContent: '加载成功，现在可以点击替换按钮',
+    });
   }
 
-  handleFiles = event => {
-    const file = event.target.files[0]
-    console.info(`readFile ${file}`)
-    this.readFile(file)
+  handleFiles = (event) => {
+    const file = event.target.files[0];
+    console.info(`readFile ${file}`);
+    this.readFile(file);
   }
 
-  dropHandler = event => {
-    console.log('File(s) dropped')
+  dropHandler = (event) => {
+    console.log('File(s) dropped');
     // Prevent default behavior (Prevent file from being opened)
-    event.preventDefault()
-    let file = null
+    event.preventDefault();
+    let file = null;
     if (event.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (let i = 0; i < event.dataTransfer.items.length; i++) {
+      for (let i = 0; i < event.dataTransfer.items.length; ++i) {
         // If dropped items aren't files, reject them
         if (event.dataTransfer.items[i].kind === 'file') {
-          file = event.dataTransfer.items[i].getAsFile()
+          file = event.dataTransfer.items[i].getAsFile();
           console.log(
-            `event.dataTransfer.items... file[${i}].name = ${file.name}`
-          )
+            `event.dataTransfer.items... file[${i}].name = ${file.name}`,
+          );
         }
       }
     } else {
       // Use DataTransfer interface to access the file(s)
-      for (let i = 0; i < event.dataTransfer.files.length; i++) {
-        file = event.dataTransfer.files[i]
+      for (let i = 0; i < event.dataTransfer.files.length; ++i) {
+        file = event.dataTransfer.files[i];
         console.log(
           `event.dataTransfer.files... file[${i}].name = ${
             event.dataTransfer.files[i].name
-          }`
-        )
+          }`,
+        );
       }
     }
     // Pass event to removeDragData for cleanup
-    this.removeDragData(event)
+    this.removeDragData(event);
 
     // Read the file now.
-    this.readFile(file)
+    this.readFile(file);
   }
 
-  dragOverHandler = event => {
-    console.log('File(s) in drop zone')
+  dragOverHandler = (event) => {
+    console.log('File(s) in drop zone');
     // Prevent default behavior (Prevent file from being opened)
-    event.preventDefault()
+    event.preventDefault();
   }
 
-  removeDragData = event => {
-    console.log('Removing drag data')
+  removeDragData = (event) => {
+    console.log('Removing drag data');
     if (event.dataTransfer.items) {
       // Use DataTransferItemList interface to remove the drag data
-      event.dataTransfer.items.clear()
+      event.dataTransfer.items.clear();
     } else {
       // Use DataTransfer interface to remove the drag data
-      event.dataTransfer.clearData()
+      event.dataTransfer.clearData();
     }
   }
 
-  Transition = props => {
-    return <Slide direction="up" {...props} />
-  }
+  Transition = props => <Slide direction="up" {...props} />
 
   handleClose = () => {
-    this.setState({ open: false })
+    this.setState({ open: false });
   }
 
   render = () => {
-    let { originalText, replacedText } = this.state
+    const {
+      originalText,
+      replacedText,
+      completed,
+      open,
+      dialogTitle,
+      dialogContent,
+    } = this.state;
+    const options = {
+      selectOnLineNumbers: false,
+      readOnly: true,
+      enableSplitViewResizing: false,
+      renderSideBySide: true,
+    };
     return (
       <div>
         <Card className="card">
@@ -212,9 +224,9 @@ class Home extends Component {
               id="docpicker"
               className="file"
               onChange={this.handleFiles}
-              ref={file => {
-                console.info(`ref file: ${file}`)
-                this.fileInput = file
+              ref={(file) => {
+                console.info(`ref file: ${file}`);
+                this.fileInput = file;
               }}
               accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             />
@@ -231,27 +243,28 @@ class Home extends Component {
         <LinearProgress
           className="progress"
           variant="determinate"
-          value={this.state.completed}
+          value={completed}
         />
-        <ReactDiffViewer
-          oldValue={originalText}
-          newValue={replacedText}
-          splitView
+        <MonacoDiffEditor
+          height="600"
+          language="text"
+          value={replacedText}
+          original={originalText}
+          options={options}
+          theme="vs-light"
         />
         <Dialog
-          open={this.state.open}
+          open={open}
           TransitionComponent={this.Transition}
           keepMounted
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle id="alert-dialog-slide-title">
-            {this.state.dialogTitle}
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title">{dialogTitle}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              {this.state.dialogContent}
+              {dialogContent}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -261,8 +274,8 @@ class Home extends Component {
           </DialogActions>
         </Dialog>
       </div>
-    )
+    );
   }
 }
 
-export default Home
+export default Home;

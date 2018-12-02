@@ -18,7 +18,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -98,8 +98,11 @@ class Header extends React.Component {
 
     // https://stackoverflow.com/questions/47709225/react-router-v4-pass-parameters-to-withrouter
     let RouterListItem = ({ history, ...item }) => (
-      <ListItem button key={item.title}
-        onClick={() => { history.push(`${item.url.toLowerCase()}`); this.setState({ open: false }); }} >
+      <ListItem
+        button
+        key={item.title}
+        onClick={() => { history.push(`${item.url.toLowerCase()}`); this.setState({ open: false }); }}
+      >
         <ListItemIcon><InboxIcon /></ListItemIcon>
         <ListItemText primary={item.title} />
       </ListItem>
@@ -147,14 +150,14 @@ class Header extends React.Component {
           <Divider />
           <List>
             {[{ title: '主页', url: '/' }, { title: '配置', url: '/configuration' }, { title: '关于', url: '/about' }].map(item => (
-              <RouterListItem {...item} key={item.url}/>
+              <RouterListItem {...item} key={item.url} />
             ))}
             {this.Button}
           </List>
         </Drawer>
       </div>
     );
-  };
+  }
 }
 
 Header.propTypes = {

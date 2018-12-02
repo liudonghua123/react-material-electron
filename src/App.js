@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import withRoot from './withRoot';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import {
   Route,
   NavLink,
   HashRouter,
-  withRouter
-} from "react-router-dom";
+  withRouter,
+} from 'react-router-dom';
+import withRoot from './withRoot';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Configuration from './pages/Configuration';
 import About from './pages/About';

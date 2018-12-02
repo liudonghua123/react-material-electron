@@ -44,7 +44,8 @@ function createWindow() {
     console.info(`begine convertSynonym for ${text}`)
     const result = segment.doSegment(text, {
       convertSynonym: true,
-      simple: true
+      simple: true,
+      raw: true
     })
     console.info(`finish convertSynonym with ${result}`)
     mainWindow.webContents.send('get-synonym-result', result.join(''))

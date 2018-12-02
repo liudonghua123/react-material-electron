@@ -182,6 +182,7 @@ class Home extends Component {
       readOnly: true,
       enableSplitViewResizing: false,
       renderSideBySide: true,
+      contextmenu: false,
     };
     return (
       <div>
@@ -236,7 +237,7 @@ class Home extends Component {
               onDragOver={this.dragOverHandler}
               onClick={this.handleClick('file')}
             >
-              <p>Drag one or more files to this Drop Zone ...</p>
+              <p>拖拽UTF-8编码的文本文件或者点击选择文件</p>
             </div>
           </CardContent>
         </Card>

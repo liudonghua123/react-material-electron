@@ -12,7 +12,7 @@ import About from "./pages/About";
 
 const styles = theme => ({
   root: {
-    paddingTop: theme.spacing.unit * 20
+    paddingTop: theme.spacing.unit + 64
   }
 });
 

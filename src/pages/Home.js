@@ -45,7 +45,8 @@ class Home extends Component {
   handleClick = name => (event) => {
     if (name === 'replace') {
       // search and replace, and update completed
-      const { items, originalText, replacedText } = this.state;
+      const { items, originalText } = this.state;
+      let { replacedText } = this.state;
       const totalCount = items.length;
       // init originalText to replacedText
       replacedText = originalText;
@@ -61,7 +62,7 @@ class Home extends Component {
           );
           this.setState({
             replacedText,
-            completed: parseInt(((i + 1) / totalCount) * 100),
+            completed: parseInt(((i + 1) / totalCount) * 100, 10),
           });
           if (i + 1 === totalCount) {
             this.setState({
@@ -78,15 +79,17 @@ class Home extends Component {
       console.info('file clicked');
       this.fileInput.click();
     } else if (name === 'synonym') {
-      const text = this.state.originalText;
+      const { originalText: text } = this.state;
       // send convert synonym request
       const result = ipc.send('get-synonym', text);
     } else if (name === 'copyToOriginal') {
+      const { replacedText } = this.state;
       this.setState({
-        originalText: this.state.replacedText,
+        originalText: replacedText,
       });
     } else if (name === 'saveResult') {
-      downloadFile(this.state.replacedText, `result-${getSimpleDateTime()}`, 'text/plain;charset=utf-8');
+      const { replacedText } = this.state;
+      downloadFile(replacedText, `result-${getSimpleDateTime()}`, 'text/plain;charset=utf-8');
     }
   }
 

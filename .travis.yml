@@ -15,7 +15,7 @@ before_deploy:
 - git config core.autocrlf true
 install:
 - npm config set registry="http://registry.npmjs.org/"
-- npm i -force
+- travis_wait 30 npm i
 script:
 - CI=false npm run dist
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tree dist; fi

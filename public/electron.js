@@ -30,7 +30,7 @@ let mainWindow
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 900, height: 900 })
+  mainWindow = new BrowserWindow({ width: 1000, height: 1000 })
 
   // and load the index.html of the app.
   console.info(`isDev is ${isDev}`)

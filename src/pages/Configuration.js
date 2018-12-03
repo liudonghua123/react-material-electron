@@ -19,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import { downloadFile, readFile, getSimpleDateTime } from '../utils';
 
 const styles = theme => ({
   container: {
@@ -32,6 +33,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
+    height: 50,
   },
   button: {
     margin: 'auto',
@@ -245,6 +247,44 @@ class Configuration extends PureComponent {
     localStorage.setItem('items', JSON.stringify(items));
   }
 
+  handleImport = (event) => {
+    console.info('file clicked');
+    this.fileInput.click();
+  };
+
+  handleExport = (event) => {
+    const { items } = this.state;
+    let exportContents = '';
+    for (const item of items) {
+      exportContents += `${item.search},${item.replace}\r\n`;
+    }
+    const d = new Date();
+    downloadFile(exportContents, `export-data-${getSimpleDateTime()}.txt`, 'text/plain;charset=utf-8');
+  };
+
+  handleFiles = (event) => {
+    const file = event.target.files[0];
+    console.info(`readFile ${file}`);
+    readFile(file, (textContents) => {
+      const items = [];
+      // By lines
+      const lines = textContents.split('\n');
+      for (let line = 0; line < lines.length; line++) {
+        // split the origin and repaced by comma
+        const words = lines[line].split(',');
+        if (words.length && words.length === 2) {
+          items.push({ search: words[0].trim(), replace: words[1].trim() });
+        }
+      }
+      this.setState({
+        items,
+        searchMode: false,
+      });
+      console.info(`import to save items ${JSON.stringify(items)}`);
+      localStorage.setItem('items', JSON.stringify(items));
+    });
+  }
+
   handleRLDDChange = (reorderedItems) => {
     this.setState({ items: reorderedItems });
   };
@@ -277,31 +317,44 @@ class Configuration extends PureComponent {
       <div>
         <form className={classes.container} noValidate autoComplete="off">
           <Grid container spacing={24}>
-            <Grid item xs={3} className={classes.grid}>
-              <TextField
-                label="搜索"
-                className={classes.textField}
+            <Grid item xs={2} className={classes.grid}>
+              <Input
+                placeholder="搜索"
+                className={classes.input}
                 value={this.state.name}
                 onChange={this.handleChange('search')}
-                margin="normal"
-                variant="outlined"
               />
             </Grid>
-            <Grid item xs={3} className={classes.grid}>
-              <TextField
-                label="替换"
-                className={classes.textField}
+            <Grid item xs={2} className={classes.grid}>
+              <Input
+                placeholder="替换"
+                className={classes.input}
                 value={this.state.replace}
                 onChange={this.handleChange('replace')}
-                margin="normal"
-                variant="outlined"
               />
             </Grid>
-            <Grid item xs={3} className={classes.grid}>
-              <Button variant="contained" onClick={this.handleAdd} className={classes.button}>添加</Button>
+            <Grid item xs={2} className={classes.grid}>
+              <Button variant="contained" onClick={this.handleAdd} color="primary" className={classes.button}>添加</Button>
             </Grid>
-            <Grid item xs={3} className={classes.grid}>
+            <Grid item xs={2} className={classes.grid}>
               <Button variant="contained" onClick={this.handleSearch} color="primary" className={classes.button}>搜索</Button>
+            </Grid>
+            <Grid item xs={2} className={classes.grid}>
+              <input
+                type="file"
+                id="docpicker"
+                className="file"
+                onChange={this.handleFiles}
+                ref={(file) => {
+                  console.info(`ref file: ${file}`);
+                  this.fileInput = file;
+                }}
+                accept=".txt"
+              />
+              <Button variant="contained" color="secondary" onClick={this.handleImport} className={classes.button}>导入</Button>
+            </Grid>
+            <Grid item xs={2} className={classes.grid}>
+              <Button variant="contained" color="secondary" onClick={this.handleExport} className={classes.button}>导出</Button>
             </Grid>
           </Grid>
         </form>

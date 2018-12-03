@@ -16,6 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import './home.css';
+import { downloadFile, getSimpleDateTime } from '../utils';
 
 const { remote, ipcRenderer: ipc } = window.require('electron');
 
@@ -84,6 +85,8 @@ class Home extends Component {
       this.setState({
         originalText: this.state.replacedText,
       });
+    } else if (name === 'saveResult') {
+      downloadFile(this.state.replacedText, `result-${getSimpleDateTime()}`, 'text/plain;charset=utf-8');
     }
   }
 
@@ -183,6 +186,8 @@ class Home extends Component {
       enableSplitViewResizing: false,
       renderSideBySide: true,
       contextmenu: false,
+      wordWrap: 'bounded',
+
     };
     return (
       <div>
@@ -216,6 +221,13 @@ class Home extends Component {
             >
               重置
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleClick('saveResult')}
+            >
+              保存结果文件
+            </Button>
           </CardContent>
         </Card>
         <Card className="card">
@@ -236,24 +248,29 @@ class Home extends Component {
               onDrop={this.dropHandler}
               onDragOver={this.dragOverHandler}
               onClick={this.handleClick('file')}
+              role="button"
             >
               <p>拖拽UTF-8编码的文本文件或者点击选择文件</p>
             </div>
           </CardContent>
         </Card>
-        <LinearProgress
-          className="progress"
-          variant="determinate"
-          value={completed}
-        />
-        <MonacoDiffEditor
-          height="600"
-          language="text"
-          value={replacedText}
-          original={originalText}
-          options={options}
-          theme="vs-light"
-        />
+        <Card className="card">
+          <CardContent className="cardContent">
+            <LinearProgress
+              className="progress"
+              variant="determinate"
+              value={completed}
+            />
+            <MonacoDiffEditor
+              height="400"
+              language="text"
+              value={replacedText}
+              original={originalText}
+              options={options}
+              theme="vs-light"
+            />
+          </CardContent>
+        </Card>
         <Dialog
           open={open}
           TransitionComponent={this.Transition}

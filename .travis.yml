@@ -8,14 +8,14 @@ node_js:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y fakeroot rpm; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y tree; fi
-- npm i -g shx npm-check
+- npm i -g shx npm-check yarn
 before_deploy:
 - git config --local user.name "liudonghua123"
 - git config --local user.email "liudonghua123@gmail.com"
 - git config core.autocrlf true
 install:
 - npm config set registry="http://registry.npmjs.org/"
-- travis_wait 30 npm i
+- npm i
 script:
 - CI=false npm run dist
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tree dist; fi

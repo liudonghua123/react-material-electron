@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 // https://github.com/mui-org/material-ui/issues/6256
 import 'typeface-roboto';
-import 'material-design-icons/iconfont/material-icons.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 const rootEl = document.getElementById('root');
 

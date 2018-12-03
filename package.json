@@ -85,8 +85,16 @@
       "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
       "target": [
         {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
           "target": "zip",
           "arch": [
+            "x64",
             "ia32"
           ]
         }

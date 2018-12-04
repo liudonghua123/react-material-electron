@@ -24,7 +24,8 @@
     "semi": "warn",
     "no-console": ["error", { "allow": ["log", "info", "warn", "error"] }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "arrow-parens":"warn"
+    "arrow-parens":"warn",
+    "linebreak-style": 0
   },
   "parser": "babel-eslint",
   "extends": "airbnb",

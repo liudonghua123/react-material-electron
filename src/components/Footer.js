@@ -5,8 +5,7 @@ import Typography from '@material-ui/core/Typography';
 const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing.unit,
-    padding: `${theme.spacing.unit * 6}px 0`,
+    padding: `${theme.spacing.unit}px 0`,
   },
 });
 
@@ -23,7 +22,7 @@ class Footer extends Component {
     return (
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
-          This is the footer
+          同义词替换小程序
         </Typography>
       </footer>
     );

@@ -346,7 +346,7 @@ class Configuration extends PureComponent {
                 className="file"
                 onChange={this.handleFiles}
                 ref={(file) => {
-                  console.info(`ref file: ${file}`);
+                  // console.info(`ref file: ${file}`);
                   this.fileInput = file;
                 }}
                 accept=".txt"

@@ -42,6 +42,22 @@ class Home extends Component {
     });
   }
 
+  componentWillMount() {
+    console.log(`componentWillMount, restore the original state`);
+    const savedState = JSON.parse(localStorage.getItem('state'));
+    this.setState({...savedState});
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(`shouldComponentUpdate with nextProps: ${JSON.stringify(nextProps)}, nextState: ${JSON.stringify(nextState)}`);
+    return true;
+  }
+
+  componentWillUnmount() {
+    console.log(`componentWillUnmount, save the state`);
+    localStorage.setItem('state', JSON.stringify(this.state));
+  }
+
   handleClick = name => (event) => {
     if (name === 'replace') {
       // search and replace, and update completed
@@ -241,7 +257,7 @@ class Home extends Component {
               className="file"
               onChange={this.handleFiles}
               ref={(file) => {
-                console.info(`ref file: ${file}`);
+                // console.info(`ref file: ${file}`);
                 this.fileInput = file;
               }}
               accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"

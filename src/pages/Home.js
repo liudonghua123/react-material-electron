@@ -24,9 +24,6 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: localStorage.getItem('items')
-        ? JSON.parse(localStorage.getItem('items'))
-        : [],
       originalText: '',
       replacedText: '',
       completed: 0,
@@ -43,39 +40,40 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    console.log(`componentWillMount, restore the original state`);
+    console.log('componentWillMount, restore the original state');
     const savedState = JSON.parse(localStorage.getItem('state'));
-    this.setState({...savedState});
+    this.setState({ ...savedState });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(`shouldComponentUpdate with nextProps: ${JSON.stringify(nextProps)}, nextState: ${JSON.stringify(nextState)}`);
+    console.log(
+      `shouldComponentUpdate with nextProps: ${JSON.stringify(
+        nextProps,
+      )}, nextState: ${JSON.stringify(nextState)}`,
+    );
     return true;
   }
 
   componentWillUnmount() {
-    console.log(`componentWillUnmount, save the state`);
+    console.log('componentWillUnmount, save the state');
     localStorage.setItem('state', JSON.stringify(this.state));
   }
 
   handleClick = name => (event) => {
     if (name === 'replace') {
       // search and replace, and update completed
-      const { items, originalText } = this.state;
-      let { replacedText } = this.state;
+      const { originalText } = this.state;
+      const items = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
       const totalCount = items.length;
       // init originalText to replacedText
-      replacedText = originalText;
+      let replacedText = originalText;
       this.setState({
         completed: 0,
       });
       for (let i = 0; i < totalCount; i++) {
         setTimeout(() => {
-          console.log(`process ${i} item`);
-          const replacedText = replacedText.replace(
-            new RegExp(items[i].search, 'gm'),
-            items[i].replace,
-          );
+          console.log(`process ${i} item ${items[i]}`);
+          replacedText = replacedText.replace(new RegExp(items[i].search, 'gm'), items[i].replace);
           this.setState({
             replacedText,
             completed: parseInt(((i + 1) / totalCount) * 100, 10),
@@ -87,7 +85,7 @@ class Home extends Component {
               dialogContent: '替换完成',
             });
           }
-        }, i * 1000);
+        }, i * 500);
       }
     } else if (name === 'reset') {
       this.setState({ replacedText: '', completed: 0 });
@@ -107,7 +105,7 @@ class Home extends Component {
       const { replacedText } = this.state;
       downloadFile(replacedText, `result-${getSimpleDateTime()}`, 'text/plain;charset=utf-8');
     }
-  }
+  };
 
   readFile = (file) => {
     // read file
@@ -125,13 +123,13 @@ class Home extends Component {
       dialogTitle: '文件加载',
       dialogContent: '加载成功，现在可以点击替换按钮',
     });
-  }
+  };
 
   handleFiles = (event) => {
     const file = event.target.files[0];
     console.info(`readFile ${file}`);
     this.readFile(file);
-  }
+  };
 
   dropHandler = (event) => {
     console.log('File(s) dropped');
@@ -144,9 +142,7 @@ class Home extends Component {
         // If dropped items aren't files, reject them
         if (event.dataTransfer.items[i].kind === 'file') {
           file = event.dataTransfer.items[i].getAsFile();
-          console.log(
-            `event.dataTransfer.items... file[${i}].name = ${file.name}`,
-          );
+          console.log(`event.dataTransfer.items... file[${i}].name = ${file.name}`);
         }
       }
     } else {
@@ -154,9 +150,7 @@ class Home extends Component {
       for (let i = 0; i < event.dataTransfer.files.length; ++i) {
         file = event.dataTransfer.files[i];
         console.log(
-          `event.dataTransfer.files... file[${i}].name = ${
-            event.dataTransfer.files[i].name
-          }`,
+          `event.dataTransfer.files... file[${i}].name = ${event.dataTransfer.files[i].name}`,
         );
       }
     }
@@ -165,13 +159,13 @@ class Home extends Component {
 
     // Read the file now.
     this.readFile(file);
-  }
+  };
 
   dragOverHandler = (event) => {
     console.log('File(s) in drop zone');
     // Prevent default behavior (Prevent file from being opened)
     event.preventDefault();
-  }
+  };
 
   removeDragData = (event) => {
     console.log('Removing drag data');
@@ -182,22 +176,17 @@ class Home extends Component {
       // Use DataTransfer interface to remove the drag data
       event.dataTransfer.clearData();
     }
-  }
+  };
 
-  Transition = props => <Slide direction="up" {...props} />
+  Transition = props => <Slide direction="up" {...props} />;
 
   handleClose = () => {
     this.setState({ open: false });
-  }
+  };
 
   render = () => {
     const {
-      originalText,
-      replacedText,
-      completed,
-      open,
-      dialogTitle,
-      dialogContent,
+      originalText, replacedText, completed, open, dialogTitle, dialogContent,
     } = this.state;
     const options = {
       selectOnLineNumbers: false,
@@ -206,17 +195,12 @@ class Home extends Component {
       renderSideBySide: true,
       contextmenu: false,
       wordWrap: 'bounded',
-
     };
     return (
       <div>
         <Card className="card">
           <CardContent className="cardContent">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleClick('synonym')}
-            >
+            <Button variant="contained" color="primary" onClick={this.handleClick('synonym')}>
               同义词处理
             </Button>
             <Button
@@ -226,25 +210,13 @@ class Home extends Component {
             >
               复制结果到待处理区
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleClick('replace')}
-            >
+            <Button variant="contained" color="primary" onClick={this.handleClick('replace')}>
               自定义替换
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleClick('reset')}
-            >
+            <Button variant="contained" color="primary" onClick={this.handleClick('reset')}>
               重置
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleClick('saveResult')}
-            >
+            <Button variant="contained" color="primary" onClick={this.handleClick('saveResult')}>
               保存结果文件
             </Button>
           </CardContent>
@@ -275,11 +247,7 @@ class Home extends Component {
         </Card>
         <Card className="card">
           <CardContent className="cardContent">
-            <LinearProgress
-              className="progress"
-              variant="determinate"
-              value={completed}
-            />
+            <LinearProgress className="progress" variant="determinate" value={completed} />
             <MonacoDiffEditor
               height="400"
               language="text"
@@ -312,7 +280,7 @@ class Home extends Component {
         </Dialog>
       </div>
     );
-  }
+  };
 }
 
 export default Home;

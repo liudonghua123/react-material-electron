@@ -286,6 +286,7 @@ class Configuration extends PureComponent {
   }
 
   handleRLDDChange = (reorderedItems) => {
+    console.info(`handleRLDDChange, reorderedItems: ${reorderedItems}`)
     this.setState({ items: reorderedItems });
   };
 
@@ -304,6 +305,14 @@ class Configuration extends PureComponent {
       </div>
     </div>
   );
+
+  listRender() {
+    const items = this.state.searchMode ? this.state.searchItems : this.state.items;
+    const itemCards = items.map((item, index) => {
+      return this.itemRenderer(item, index);
+    });
+    return (<div>{itemCards}</div>);
+  };
 
   Transition = props => <Slide direction="up" {...props} />
 
@@ -359,12 +368,7 @@ class Configuration extends PureComponent {
           </Grid>
         </form>
         <div>
-          <RLDD
-            cssClasses="list-container"
-            items={this.state.searchMode ? this.state.searchItems : this.state.items}
-            itemRenderer={this.itemRenderer}
-            onChange={this.handleRLDDChange}
-          />
+          { this.listRender() }
         </div>
         <Dialog
           open={this.state.open}

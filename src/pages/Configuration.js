@@ -188,7 +188,7 @@ class Configuration extends PureComponent {
       this.setState({ open: true, dialogTitle: '错误', dialogContent: '搜索或替换都不能为空' });
       return;
     }
-    const items = [...this.state.items, { search: this.state.search, replace: this.state.replace }];
+    const items = [...this.state.items, { search: this.state.search, replace: this.state.replace, id: this.state.items.length }];
     this.setState({
       items,
       searchMode: false,
@@ -273,7 +273,7 @@ class Configuration extends PureComponent {
         // split the origin and repaced by comma
         const words = lines[line].split(',');
         if (words.length && words.length === 2) {
-          items.push({ search: words[0].trim(), replace: words[1].trim() });
+          items.push({ search: words[0].trim(), replace: words[1].trim(), id: line });
         }
       }
       this.setState({
@@ -287,6 +287,8 @@ class Configuration extends PureComponent {
 
   handleRLDDChange = (reorderedItems) => {
     this.setState({ items: reorderedItems });
+    console.info(`save updated Items ${JSON.stringify(reorderedItems)}`);
+    localStorage.setItem('items', JSON.stringify(reorderedItems));
   };
 
   itemRenderer = (item, index) => (
